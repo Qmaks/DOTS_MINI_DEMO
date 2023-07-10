@@ -10,6 +10,6 @@ namespace Components.Aspects
         
         readonly RefRO<Turret> turret;
         
-        public readonly RefRW<TimerComponent> shootTimerComponent;
+        public readonly RefRW<Timer> shootTimerComponent;
     }
 }

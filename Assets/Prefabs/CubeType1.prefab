@@ -42,11 +42,11 @@ GameObject:
   - component: {fileID: 8657338877021947638}
   - component: {fileID: 5404477563961242571}
   - component: {fileID: 5049817456286269013}
-  - component: {fileID: 3046923287681385246}
   - component: {fileID: 3050903926673610434}
   - component: {fileID: 5996792968108322096}
   - component: {fileID: 1322837562715556154}
   - component: {fileID: 9210651982108524416}
+  - component: {fileID: -4084904972493594505}
   m_Layer: 0
   m_Name: CubeType1
   m_TagString: Untagged
@@ -120,27 +120,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3046923287681385246
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6286433504656869273}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3050903926673610434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b521e5b0709542c3ae17002f632edc19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Value: 2
+  Value: 1.5
 --- !u!114 &5996792968108322096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,3 +308,16 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &-4084904972493594505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6286433504656869273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069e22ebfae84da8adfa17be91cfd72a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingHealth: 4

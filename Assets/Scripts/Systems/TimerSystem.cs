@@ -9,7 +9,7 @@ namespace Systems
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
             ;
-            foreach (var timerComponent in SystemAPI.Query<RefRW<TimerComponent>>())
+            foreach (var timerComponent in SystemAPI.Query<RefRW<Timer>>())
             {
                 if (timerComponent.ValueRW.remainingTime > 0)
                     timerComponent.ValueRW.remainingTime -= deltaTime;

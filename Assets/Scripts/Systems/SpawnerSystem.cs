@@ -6,7 +6,7 @@ using Unity.Transforms;
 
 namespace Systems
 {
-    public partial class ArmySpawnerSystem : SystemBase
+    public partial class SpawnerSystem : SystemBase
     {
         private const int ARMY_AMMOUNT = 100;
         private const int LINE_LENGTH  = 25;
@@ -19,7 +19,7 @@ namespace Systems
         
         protected override void OnUpdate()
         {
-            var playerSpawnerComponent = SystemAPI.GetSingleton<CubeSpawnerComponent>();
+            var playerSpawnerComponent = SystemAPI.GetSingleton<CubeSpawner>();
 
             if (!isSpawned)
             {

@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 4295559998638390643}
   - component: {fileID: -3110713699496814014}
   - component: {fileID: 358907051348559617}
+  - component: {fileID: -8972727550264190679}
+  - component: {fileID: 2313642353199525660}
   m_Layer: 0
   m_Name: BulletRedTeam
   m_TagString: Untagged
@@ -115,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b521e5b0709542c3ae17002f632edc19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Value: 4
+  Value: 6
 --- !u!114 &-3110713699496814014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,3 +312,28 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
+--- !u!114 &-8972727550264190679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029517932633281991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe1070f28ff4ae9892357f1bfef0fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2313642353199525660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029517932633281991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be33e5aaf99c47d8ae6688df4c3f4a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 1

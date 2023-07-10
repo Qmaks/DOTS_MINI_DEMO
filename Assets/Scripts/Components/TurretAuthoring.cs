@@ -20,13 +20,14 @@ namespace Components
             public override void Bake(TurretAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
+                
                 AddComponent(entity,new Turret
                 {
                     CannonBallPrefab = GetEntity(authoring.CannonBallPrefab,TransformUsageFlags.Dynamic),
                     CannonBallSpawn = GetEntity(authoring.CannonBallSpawn,TransformUsageFlags.Dynamic)
                 });
                 
-                AddComponent(entity,new TimerComponent(authoring.shootDuration));
+                AddComponent(entity,new Timer(authoring.shootDuration));
             }
         }
     }

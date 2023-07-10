@@ -1,17 +1,18 @@
-﻿using Unity.Burst;
+﻿using Components;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
-using UnityEngine;
 
 namespace Systems
 {
+    
     [RequireMatchingQueriesForUpdate]
     [UpdateInGroup(typeof(PhysicsSystemGroup))]
-    [UpdateAfter(typeof(PhysicsSimulationGroup))]
-    public partial struct DestroySystem : ISystem
+    [UpdateAfter(typeof(DamageTriggerSystem))]
+    public partial struct DestroyOnContactSystem : ISystem
     {
-        [BurstCompile]
+         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<SimulationSingleton>();
@@ -21,13 +22,15 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var ecbBegin = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            var ecbBegin = SystemAPI.GetSingleton<BeginFixedStepSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
             
             var simulation = SystemAPI.GetSingleton<SimulationSingleton>();
             simulation.AsSimulation().FinalSimulationJobHandle.Complete();
             
             var triggerJob = new TriggerJob
             {
+                DestroyOnContact = SystemAPI.GetComponentLookup<DestroyOnContact>(),
                 EcbBegin = ecbBegin
             };
             
@@ -38,12 +41,17 @@ namespace Systems
         [BurstCompile]
         private struct TriggerJob : ITriggerEventsJob
         {
+            public ComponentLookup<DestroyOnContact> DestroyOnContact;
+            
             public EntityCommandBuffer EcbBegin;
             
             public void Execute(TriggerEvent triggerEvent)
             {
-                EcbBegin.DestroyEntity(triggerEvent.EntityA);
-                EcbBegin.DestroyEntity(triggerEvent.EntityB);
+                if (DestroyOnContact.HasComponent(triggerEvent.EntityA))
+                    EcbBegin.DestroyEntity(triggerEvent.EntityA);
+
+                if (DestroyOnContact.HasComponent(triggerEvent.EntityB))
+                    EcbBegin.DestroyEntity(triggerEvent.EntityB);
             }
         }
     }

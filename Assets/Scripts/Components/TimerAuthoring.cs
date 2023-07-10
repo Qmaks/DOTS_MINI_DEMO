@@ -2,12 +2,12 @@
 
 namespace Components
 {
-    public struct TimerComponent : IComponentData
+    public struct Timer : IComponentData
     {
         public float remainingTime;
         public float interval;
 
-        public TimerComponent(float duration) : this()
+        public Timer(float duration) : this()
         {
             SetDuration(duration);
         }
