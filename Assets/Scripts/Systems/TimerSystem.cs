@@ -1,18 +1,34 @@
 ﻿using Components;
+using Unity.Burst;
 using Unity.Entities;
 
 namespace Systems
 {
-    public partial class TimerSystem : SystemBase
+    [BurstCompile]
+    public partial struct TimerSystem : ISystem
     {
-        protected override void OnUpdate()
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            var deltaTime = SystemAPI.Time.DeltaTime;
-            ;
-            foreach (var timerComponent in SystemAPI.Query<RefRW<Timer>>())
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            new TimerJob()
             {
-                if (timerComponent.ValueRW.remainingTime > 0)
-                    timerComponent.ValueRW.remainingTime -= deltaTime;
+                DeltaTime = SystemAPI.Time.DeltaTime
+            }.ScheduleParallel();
+        }
+
+        [BurstCompile]
+        private partial struct TimerJob : IJobEntity
+        {
+            public float DeltaTime; 
+            void Execute(ref Timer timer)
+            {
+                if (timer.remainingTime > 0)
+                    timer.remainingTime -= DeltaTime;
             }
         }
     }

@@ -17,7 +17,8 @@ namespace Components
         {
             public override void Bake(MoveDirectionAuthoring authoring)
             {
-                var entity = GetEntity(TransformUsageFlags.Dynamic);
+                var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
+                
                 AddComponent(entity,new MoveDirection { value = authoring.Value });
             }
         }

@@ -14,7 +14,9 @@ namespace Components
         {
             public override void Bake(DestroyOnContactAuthoring authoring)
             {
-                AddComponent(new DestroyOnContact());
+                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+                
+                AddComponent(entity,new DestroyOnContact());
             }
         }
     }

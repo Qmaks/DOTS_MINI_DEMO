@@ -19,7 +19,7 @@ namespace Components
         {
             public override void Bake(TurretAuthoring authoring)
             {
-                var entity = GetEntity(TransformUsageFlags.Dynamic);
+                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
                 
                 AddComponent(entity,new Turret
                 {

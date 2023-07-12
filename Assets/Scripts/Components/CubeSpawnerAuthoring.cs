@@ -18,10 +18,12 @@ namespace Components
         {
             public override void Bake(CubeSpawnerAuthoring authoring)
             {
-                AddComponent(new CubeSpawner
+                var entity = GetEntity(authoring, TransformUsageFlags.None);
+                
+                AddComponent(entity,new CubeSpawner
                 {
-                    cube1Prefab = GetEntity(authoring.Cube1Prefab),
-                    cube2Prefab = GetEntity(authoring.Cube2Prefab)
+                    cube1Prefab = GetEntity(authoring.Cube1Prefab,TransformUsageFlags.Dynamic),
+                    cube2Prefab = GetEntity(authoring.Cube2Prefab,TransformUsageFlags.Dynamic)
                 });
             }
         }

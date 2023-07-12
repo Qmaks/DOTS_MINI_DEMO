@@ -1,31 +1,63 @@
 ﻿using Components;
 using Components.Aspects;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace Systems
 {
-    public partial class ShootingSystem : SystemBase  
+    [BurstCompile]
+    public partial struct ShootingSystem : ISystem
     {
-        protected override void OnUpdate()
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            foreach (var aspect in SystemAPI.Query<TurretAspect>())
+            state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        }
+
+        private EntityCommandBuffer ecb;
+        
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
+
+            new ShootJob()
+            {
+                Ecb = ecb,
+                LocalToWorldComponent = SystemAPI.GetComponentLookup<LocalToWorld>(),
+                LocalTransformComponent = SystemAPI.GetComponentLookup<LocalTransform>(),
+                MoveDirectionComponent = SystemAPI.GetComponentLookup<MoveDirection>()
+            }.Schedule();
+        }
+        
+        [BurstCompile]
+        private partial struct ShootJob : IJobEntity
+        {
+            public EntityCommandBuffer Ecb;
+            public ComponentLookup<LocalToWorld> LocalToWorldComponent;
+            public ComponentLookup<LocalTransform> LocalTransformComponent;
+            public ComponentLookup<MoveDirection> MoveDirectionComponent;
+            
+            [BurstCompile]
+            void Execute(TurretAspect aspect)
             {
                 if (aspect.shootTimerComponent.ValueRO.IsDone)
                 {
-                    var entity = EntityManager.Instantiate(aspect.CannonBallPrefab);
-                
-                    EntityManager.SetComponentData(entity, new LocalTransform
+                    var entity = Ecb.Instantiate(aspect.CannonBallPrefab);
+                    
+                    Ecb.SetComponent(entity, new LocalTransform
                     {
-                        Position = SystemAPI.GetComponent<LocalToWorld>(aspect.CannonBallSpawn).Position,
+                        Position = LocalToWorldComponent.GetRefRO(aspect.CannonBallSpawn).ValueRO.Position,
                         Rotation = quaternion.identity,
-                        Scale    = SystemAPI.GetComponent<LocalTransform>(aspect.CannonBallPrefab).Scale
+                        Scale    = LocalTransformComponent.GetRefRO(aspect.CannonBallPrefab).ValueRO.Scale
                     });
                     
-                    EntityManager.SetComponentData(entity, new MoveDirection()
+                    Ecb.SetComponent(entity, new MoveDirection()
                     {
-                        value = SystemAPI.GetComponent<MoveDirection>(aspect.entity).value
+                        value = MoveDirectionComponent.GetRefRO(aspect.entity).ValueRO.value
                     });
                     
                     aspect.shootTimerComponent.ValueRW.Reset();

@@ -22,6 +22,7 @@ namespace Components
             public override void Bake(DealDamageAuthoring authoring)
             {
                 var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
+                
                 AddComponent(entity,new DealDamage { value = authoring.Value });
             }
         }

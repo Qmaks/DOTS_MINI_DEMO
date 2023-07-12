@@ -41,6 +41,7 @@ namespace Systems
             public ComponentLookup<DealDamage> DealDamage;
             public BufferLookup<Damage> Damage;
             
+            [BurstCompile]
             public void Execute(TriggerEvent triggerEvent)
             {
                 if (DealDamage.HasComponent(triggerEvent.EntityA))

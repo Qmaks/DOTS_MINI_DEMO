@@ -15,7 +15,8 @@ namespace Components
         {
             public override void Bake(SpeedAuthoring authoring)
             {
-                var entity = GetEntity(TransformUsageFlags.Dynamic);
+                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+                
                 AddComponent(entity,new Speed { value = authoring.Value });
             }
         }

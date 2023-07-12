@@ -4,26 +4,40 @@ using Unity.Entities;
 
 namespace Systems
 {
+    [BurstCompile]
     [UpdateAfter(typeof(ResolveDamageSystem))]
-    public partial class DestroyOnDeathSystem : SystemBase
+    public partial struct DestroyOnDeathSystem : ISystem
     {
-        private EndSimulationEntityCommandBufferSystem ecbSystem;
+        private EntityCommandBuffer ecb;
 
-        protected override void OnCreate()
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            base.OnCreate();
-            ecbSystem = World
-                .GetOrCreateSystemManaged<EndSimulationEntityCommandBufferSystem>();
+            state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
+            
+            new DestroyJob()
+            {
+                Ecb = ecb
+            }.Schedule();
         }
         
-        protected override void OnUpdate()
+        [BurstCompile]
+        [WithAll(typeof(Death))]
+        private partial struct DestroyJob:IJobEntity
         {
-            var ecb = this.ecbSystem.CreateCommandBuffer();
-
-            Entities.WithAll<Death>().ForEach((Entity entity) =>
+            public EntityCommandBuffer Ecb;
+            
+            void Execute(Entity entity)
             {
-                ecb.DestroyEntity(entity);
-            }).Run();
+                Ecb.DestroyEntity(entity);
+            }
         }
     }
 }
